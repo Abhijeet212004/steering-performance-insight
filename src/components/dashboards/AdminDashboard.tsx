@@ -1,7 +1,9 @@
-import { Users, Activity, AlertTriangle, TrendingUp, Plus, Settings } from 'lucide-react';
+import { Users, Activity, AlertTriangle, TrendingUp, Plus, Settings, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ShiftManagement } from '@/components/admin/ShiftManagement';
+import { MessageDialog } from '@/components/messaging/MessageDialog';
 
 export function AdminDashboard() {
   const stats = [
@@ -88,7 +90,7 @@ export function AdminDashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Management */}
         <Card className="industrial-card">
           <CardHeader>
@@ -106,11 +108,22 @@ export function AdminDashboard() {
                       <p className="text-xs text-muted-foreground">{user.role}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <Badge variant={user.status === 'active' ? 'default' : 'secondary'}>
-                      {user.status}
-                    </Badge>
-                    <p className="text-xs text-muted-foreground mt-1">{user.lastSeen}</p>
+                  <div className="flex items-center gap-2">
+                    <MessageDialog
+                      trigger={
+                        <Button size="sm" variant="outline" className="h-8">
+                          <MessageSquare className="h-3 w-3" />
+                        </Button>
+                      }
+                      defaultRecipient={{ id: user.id, name: user.name, role: user.role }}
+                      senderRole="admin"
+                    />
+                    <div className="text-right">
+                      <Badge variant={user.status === 'active' ? 'default' : 'secondary'}>
+                        {user.status}
+                      </Badge>
+                      <p className="text-xs text-muted-foreground mt-1">{user.lastSeen}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -147,6 +160,9 @@ export function AdminDashboard() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Shift Management */}
+        <ShiftManagement />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { MessageDialog } from '@/components/messaging/MessageDialog';
 import {
   Table,
   TableBody,
@@ -15,8 +16,6 @@ import {
 import { useState } from 'react';
 
 export function FloorManagerDashboard() {
-  const [selectedWorker, setSelectedWorker] = useState<string | null>(null);
-  const [message, setMessage] = useState('');
 
   const alerts = [
     {
@@ -70,14 +69,6 @@ export function FloorManagerDashboard() {
     }
   };
 
-  const sendMessageToWorker = (workerId: string) => {
-    if (!message.trim()) return;
-    
-    // Here you would implement the actual message sending logic
-    console.log(`Sending message to worker ${workerId}: ${message}`);
-    setMessage('');
-    setSelectedWorker(null);
-  };
 
   return (
     <div className="p-6 space-y-6">
@@ -168,15 +159,16 @@ export function FloorManagerDashboard() {
                   </TableCell>
                   <TableCell>{alert.timestamp}</TableCell>
                   <TableCell>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-border"
-                      onClick={() => setSelectedWorker(alert.workerId)}
-                    >
-                      <MessageSquare className="h-3 w-3 mr-1" />
-                      Message
-                    </Button>
+                    <MessageDialog
+                      trigger={
+                        <Button size="sm" variant="outline" className="border-border">
+                          <MessageSquare className="h-3 w-3 mr-1" />
+                          Message
+                        </Button>
+                      }
+                      defaultRecipient={{ id: alert.workerId, name: alert.worker, role: 'Worker' }}
+                      senderRole="floor_manager"
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -207,63 +199,22 @@ export function FloorManagerDashboard() {
                   <p>Shift: {worker.shift}</p>
                   <p>Efficiency: {worker.efficiency}%</p>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full mt-3 border-border"
-                  onClick={() => setSelectedWorker(worker.id)}
-                >
-                  <MessageSquare className="h-3 w-3 mr-1" />
-                  Send Message
-                </Button>
+                <MessageDialog
+                  trigger={
+                    <Button size="sm" variant="outline" className="w-full mt-3 border-border">
+                      <MessageSquare className="h-3 w-3 mr-1" />
+                      Send Message
+                    </Button>
+                  }
+                  defaultRecipient={{ id: worker.id, name: worker.name, role: 'Worker' }}
+                  senderRole="floor_manager"
+                />
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Message Modal */}
-      {selectedWorker && (
-        <Card className="industrial-card">
-          <CardHeader>
-            <CardTitle className="text-foreground">Send Message to Worker</CardTitle>
-            <CardDescription>
-              Sending message to Worker ID: {selectedWorker}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <Textarea
-                placeholder="Type your message to the worker..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="bg-input border-border"
-                rows={3}
-              />
-              <div className="flex space-x-3">
-                <Button
-                  className="industrial-button"
-                  onClick={() => sendMessageToWorker(selectedWorker)}
-                  disabled={!message.trim()}
-                >
-                  <Send className="mr-2 h-4 w-4" />
-                  Send Message
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-border"
-                  onClick={() => {
-                    setSelectedWorker(null);
-                    setMessage('');
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
