@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { MessageDialog } from '@/components/messaging/MessageDialog';
+import { WorkerManagement } from '@/components/management/WorkerManagement';
 import {
   Table,
   TableBody,
@@ -177,43 +178,8 @@ export function FloorManagerDashboard() {
         </CardContent>
       </Card>
 
-      {/* Worker Status */}
-      <Card className="industrial-card">
-        <CardHeader>
-          <CardTitle className="text-foreground">Worker Status</CardTitle>
-          <CardDescription>Current shift workers and their performance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {workers.map((worker) => (
-              <div key={worker.id} className="p-4 bg-secondary/30 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-foreground">{worker.name}</h4>
-                  <Badge variant={worker.status === 'active' ? 'default' : 'secondary'}>
-                    {worker.status}
-                  </Badge>
-                </div>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <p>ID: {worker.id}</p>
-                  <p>Machine: {worker.machine}</p>
-                  <p>Shift: {worker.shift}</p>
-                  <p>Efficiency: {worker.efficiency}%</p>
-                </div>
-                <MessageDialog
-                  trigger={
-                    <Button size="sm" variant="outline" className="w-full mt-3 border-border">
-                      <MessageSquare className="h-3 w-3 mr-1" />
-                      Send Message
-                    </Button>
-                  }
-                  defaultRecipient={{ id: worker.id, name: worker.name, role: 'Worker' }}
-                  senderRole="floor_manager"
-                />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Worker Management */}
+      <WorkerManagement />
 
     </div>
   );

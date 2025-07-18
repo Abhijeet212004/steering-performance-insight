@@ -1,6 +1,7 @@
 import { BarChart, TrendingUp, Clock, Target } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { FloorManagerManagement } from '@/components/management/FloorManagerManagement';
 
 export function UnitHeadDashboard() {
   const stats = [
@@ -134,6 +135,9 @@ export function UnitHeadDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Floor Manager Management */}
+      <FloorManagerManagement />
 
       {/* Performance Trends */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -1,6 +1,7 @@
 import { Building, Users, TrendingUp, DollarSign, AlertCircle, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { UnitHeadManagement } from '@/components/management/UnitHeadManagement';
 
 export function PlantHeadDashboard() {
   const plantStats = [
@@ -201,6 +202,9 @@ export function PlantHeadDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Unit Head Management */}
+      <UnitHeadManagement />
 
       {/* Strategic Overview */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
